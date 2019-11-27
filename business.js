@@ -20,8 +20,21 @@ module.exports = class BusinessLayer {
         return false;
     }
 
-    validateDate(date) {
-
+    //validate the date string passed in and return a valid date or null
+    buildAndValidateDate(date) {
+        try{
+            var newDate = new Date(date);
+            
+            //make sure date is today or prior and date cannot be saturday or sunday
+            if(newDate > new Date() || newDate.getDay() === 0 || newDate.getDay() === 6) {
+               return null;
+            }
+            var formattedValidDate = newDate.getFullYear()+'-' + (newDate.getMonth()+1) + '-'+(newDate.getDate()+1);
+            return formattedValidDate;
+         } catch(ex) {
+            return null;
+         }
+   
     }
 
     //if the company passed in the request is not valid, return this resposne

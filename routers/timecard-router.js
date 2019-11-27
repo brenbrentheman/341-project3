@@ -17,7 +17,7 @@ var urlencodedParser = express.urlencoded({extended:false});
 /* /timecard/ */
 /*For the "timecard" path GET/POST/PUT/DELETE*/
 router.route('/')
-    .all(function(err, req, res, next) {
+    .all(function(req, res, next) {
         //make a business layer to use in all functions\
         bl = new BusinessLayer();
         next();

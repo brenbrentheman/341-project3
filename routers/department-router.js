@@ -176,7 +176,7 @@ router.route('/')
             }
 
             //if department was deleted return ok
-            return bl.basicOk(res, "Department successfully deleted")
+            return bl.basicOk(res, "Department "+id+" from "+company+" successfully deleted")
         }
         catch(ex) {
             console.log(ex);

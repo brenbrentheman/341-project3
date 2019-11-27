@@ -20,7 +20,7 @@ router.route('/')
         var bl = new BusinessLayer();
 
         //GET query params
-        var company = String(req.query.company);
+        var company = req.query.company;
 
         //check if company name is valid
         if(!bl.validateCompany(company)) {
