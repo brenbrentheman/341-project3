@@ -1,6 +1,14 @@
 var express = require('express');
 var app = express();
 
+/*
+    Brennan Jackson
+    Project 3
+    ISTE 341
+    Fall 2019
+    Service Layer
+*/
+
 //Import the routers for each path
 var departmentRouter = require('./routers/department-router.js');
 var departmentsRouter = require('./routers/departments-router.js');
@@ -14,13 +22,6 @@ var timecardsRouter = require('./routers/timecards-router.js');
 var companyRouter = require('./routers/company-router.js');
 
 var basepath = "/CompanyServices";
-/*
-    Brennan Jackson
-    Project 3
-    ISTE 341
-    Fall 2019
-    Service Layer
-*/
 
 /*This file starts the node server and establishes where requests should be routed*/
 

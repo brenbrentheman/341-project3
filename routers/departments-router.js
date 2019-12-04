@@ -12,7 +12,7 @@ var DataLayer = require("../companydata/index.js");
 
 /*DEPARTMENTS REQUESTS */
 
-/* /departments/ */
+/* PATH: /departments/ */
 /*#3. Returns the requested list of Departments*/
 router.route('/')
     .get(function(req, res) {

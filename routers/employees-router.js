@@ -28,7 +28,7 @@ router.route('/')
         }
 
         try {
-            //make data layers
+            //make data layer
             var dl = new DataLayer(company);
             //get the employees
             var emps = dl.getAllEmployee(company);
@@ -37,7 +37,7 @@ router.route('/')
                 return bl.nfReq(res, "No employees found for company")
             }
 
-            return bl.basicOk(res, emps);
+            return bl.jsonObjOk(res, emps);
         }
         catch(ex) {
             console.log(ex);

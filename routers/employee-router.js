@@ -14,7 +14,7 @@ var urlencodedParser = express.urlencoded({extended:false});
 
 /*Employee REQUESTS */
 
-/* /employee/ */
+/* PATH: /employee/ */
 /*For the "employee" path GET/POST/PUT/DELETE*/
 router.route('/')
     .all(function(req, res, next) {
