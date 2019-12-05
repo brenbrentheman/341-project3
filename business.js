@@ -26,12 +26,13 @@ module.exports = class BusinessLayer {
             var newDate = new Date(date);
             
             //make sure date is today or prior and date cannot be saturday or sunday
-            if(newDate > new Date() || newDate.getDay() === 0 || newDate.getDay() === 6) {
+            if(newDate > new Date() || newDate.getUTCDay() === 0 || newDate.getUTCDay() === 6) {
                return null;
             }
             var formattedValidDate = newDate.getFullYear()+'-' + (newDate.getMonth()+1) + '-'+(newDate.getDate()+1);
             return formattedValidDate;
          } catch(ex) {
+             console.log(ex);
             return null;
          }
    
@@ -68,7 +69,7 @@ module.exports = class BusinessLayer {
             }
 
             //start and end times need to be between 6am and 6pm
-            if(!(start_time.hours() >= 6 && start_time.hours() <= 18 && end_time.hours() >= 6 && end_time.hours() <= 18)) {
+            if(!(start_time.hours() >= 6 && start_time.hours() <= 17 && end_time.hours() >= 6 && end_time.hours() <= 17)) {
                 return null;
             }
 

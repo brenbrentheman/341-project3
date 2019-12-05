@@ -39,10 +39,10 @@ router.route('/')
 
             //continue if valid, check if id is greater than 0 (is valid)
             if(!(id > 0)) {
-                return bl.badReq(res, "Invalid tiecard id provided");
+                return bl.badReq(res, "Invalid timecard id provided");
             }
 
-            var card = dl.getTimecard(timecardId);
+            var card = dl.getTimecard(id);
                 
             //ensure the timecard id was valid (not null)
             if(card !== null) {
@@ -103,8 +103,66 @@ router.route('/')
             return bl.serverErr(res);
         }
     })
+    /*#15. Returns the updated timecard.*/
     .put(jsonParser, function(req, res) {
-        
+        //get the company name
+        var company = req.body.company;
+
+        try {
+
+            //check if company name is valid
+            if(!bl.validateCompany(company)) {
+                return bl.invalidCompanyReq(res);
+            }
+
+            //make the data layer
+            var dl = new DataLayer(company);
+
+            //first ensure we got a timecard id
+            if(typeof req.body.timecard_id === "undefined") {
+                return bl.badReq(res, "No timecard Id provided");
+            }
+            
+            var id = parseInt(req.body.timecard_id);
+
+            //get the already existing timecard
+            var oldCard = dl.getTimecard(id);
+
+            //ensure we got the old card
+            if(oldCard === null) {
+                return bl.nfReq(res, "Could not find timecard id provided");
+            }
+
+            //get the rest of the form parameters, if undefined then get the currently existing ones
+            var empId = (typeof req.body.emp_id !== "undefined") ? parseInt(req.body.emp_id) : oldCard.getEmpId();
+            var start = (typeof req.body.start_time !== "undefined") ? req.body.start_time : oldCard.getStartTime();
+            var end = (typeof req.body.end_time !== "undefined") ? req.body.end_time : oldCard.getEndTime();
+
+            oldCard.setEmpId(empId);
+            oldCard.setStartTime(start);
+            oldCard.setEndTime(end);
+
+            //validate start and end dates
+            var timestamps = bl.buildAndValidateTimestamps(start, end, null);
+            if(timestamps === null) {
+                return bl.badReq(res, "Invalid start and/or end dates.");
+            }
+
+            //update card
+            var updatedCard = dl.updateTimecard(oldCard);
+
+            //ensure card was updated successfully - if not return 400 error
+            if(updatedCard === null) {
+                return bl.badReq(res, "Timecard parameters are invalid and card could not be updated");
+            }
+
+            //if successful return ok
+            return bl.jsonObjOk(res, updatedCard);
+        }
+        catch(ex) {
+            console.log(ex);
+            return bl.serverErr(res);
+        }
     })
     /*#16. Returns the number of rows deleted.*/
     .delete(function(req, res) {
@@ -119,8 +177,11 @@ router.route('/')
                 return bl.invalidCompanyReq(res);
             }
 
+            //make business layer
+            var dl = new DataLayer(company);
+
             //delete the timecard
-            var deleted = dl.deleteTimecard(timecardId);
+            var deleted = dl.deleteTimecard(id);
 
             if(deleted > 0) {
                 return bl.basicOk(res, "Timecard " + id + " deleted.")

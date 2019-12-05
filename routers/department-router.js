@@ -95,7 +95,7 @@ router.route('/')
     })
     /*#4. Returns the updated Department as a JSON String */
     .put(jsonParser, function(req, res) {
-        var company = String(req.body.company);
+        var company = req.body.company;
 
        //check if company name is valid
        if(!bl.validateCompany(company)) {
